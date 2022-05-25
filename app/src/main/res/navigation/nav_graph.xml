@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/choiceFragment">
+    <fragment
+        android:id="@+id/choiceFragment"
+        android:name="com.gtech.paymenttool.ChoiceFragment"
+        android:label="Services"
+        tools:layout="@layout/fragment_choice" >
+        <action
+            android:id="@+id/choiceToDupkt"
+            app:destination="@id/dupktFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dupktFragment"
+        android:name="com.gtech.paymenttool.DupktFragment"
+        android:label="Generate DUPKT"
+        tools:layout="@layout/fragment_dupkt" >
+        <action
+            android:id="@+id/dupktToChoice"
+            app:destination="@id/choiceFragment" />
+    </fragment>
+</navigation>
