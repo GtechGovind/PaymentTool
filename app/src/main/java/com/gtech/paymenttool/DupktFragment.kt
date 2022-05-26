@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.gtech.paymenttool.databinding.FragmentDupktBinding
 
-
 class DupktFragment : Fragment() {
 
     private var _binding: FragmentDupktBinding? = null
@@ -33,14 +32,17 @@ class DupktFragment : Fragment() {
 
             if (isValid()) {
 
-                binding.DerivedIpeck.text = ""
-
-                val bdk = binding.BDK.text.toString().trim()
-                val ksn = binding.KSN.text.toString().trim()
-
                 try {
-                    val result = Dukpt.GetIPEK(ksn, bdk)
-                    binding.DerivedIpeck.text = result.toString().uppercase()
+                    binding.DerivedIpeck.text = ""
+
+                    val bdk = Dukpt.toBitSet(binding.BDK.text.toString().trim().toByteArray())
+                    val ksn = Dukpt.toBitSet(binding.KSN.text.toString().trim().toByteArray())
+
+                    println(bdk)
+                    println(ksn)
+
+                    val result = Dukpt.getIpek(bdk, ksn)
+                    binding.DerivedIpeck.text = Dukpt.toHex(result.toByteArray())
                 } catch (e: Exception) {
                     binding.DerivedIpeck.text = e.message
                 }
@@ -50,11 +52,9 @@ class DupktFragment : Fragment() {
         }
 
         binding.CopyToClipboardBtn.setOnClickListener {
-            val clipboardManager =
-                requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clipboardManager = requireActivity().getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clipData = ClipData.newPlainText("IPEK", binding.DerivedIpeck.text.toString())
             clipboardManager.setPrimaryClip(clipData)
-
         }
 
     }
